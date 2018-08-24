@@ -63,7 +63,7 @@ def build_RNN(args, inputs, cell_fn, seq_len):
                         tf.nn.dynamic_rnn(fw_stack_cell,
                                             inputs=inputs,
                                             sequence_length=seq_len,
-                                            initial_state_fw = _initial_state_fw)
+                                            initial_state = _initial_state_fw)
         # rnn outputs 
         # catch hidden of last timestep
         # transpose to [max_time, batch_size, hidden_size]
@@ -109,10 +109,13 @@ class BiRNN(object):
                            'batch size': args.batch_size}
 
             outputs = build_BRNN(self.args, self.inputs, self.cell_fn, self.seq_len) 
+            #outputs = build_RNN(self.args, self.inputs, self.cell_fn, self.seq_len) 
             
             # fc layer
             logits = tf.contrib.layers.fully_connected(outputs, args.num_class,
-                                    activation_fn=tf.nn.relu())
+                                    activation_fn=tf.nn.relu)
+            logits = tf.contrib.layers.fully_connected(logits, args.num_class,
+                                    activation_fn=None)
             
             self.loss = tf.reduce_mean(tf.nn.softmax_cross_entropy_with_logits(
                         logits=logits, labels=targets_onehot))

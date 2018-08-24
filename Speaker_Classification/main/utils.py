@@ -43,7 +43,7 @@ def load_data(path):
         file_name = os.path.join(path, f) 
         speaker = f.split('-')[0]
         
-        input_list.append(np.load(file_name))
+        input_list.append(np.load(file_name)[:,:100])
         label_list.append(speaker)
 
     # check data

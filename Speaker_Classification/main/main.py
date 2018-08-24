@@ -121,7 +121,11 @@ class Runner(object):
                     
                     batch_inputs, batch_targets, batch_seq_len = next_batch(
                                     batch_size, [input_train, target_train, seq_train])  
-                    
+                    ''' 
+                    batch_inputs = input_train[:batch_size]                    
+                    batch_targets = target_train[:batch_size]                    
+                    batch_seq_len = seq_train[:batch_size]                    
+                    ''' 
                     feed = {model.inputs:batch_inputs,
                             model.targets:batch_targets,
                             model.seq_len:batch_seq_len}
